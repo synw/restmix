@@ -20,6 +20,11 @@
     </template>
     <template #menu>
       <div class="flex flex-row items-center justify-end h-full space-x-1">
+        <div class="pr-5 text-2xl cursor-pointer txt-lighter dark:txt-light">
+          <a href="https://github.com/synw/restmix">
+            <i-fa-brands:github></i-fa-brands:github>
+          </a>
+        </div>
         <div class="pr-5 text-lg cursor-pointer txt-lighter dark:txt-light" @click="user.toggleDarkMode()">
           <i-fa-solid:moon v-if="!user.isDarkMode.value"></i-fa-solid:moon>
           <i-fa-solid:sun v-else></i-fa-solid:sun>
