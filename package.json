@@ -1,0 +1,40 @@
+{
+  "name": "restmix",
+  "version": "0.0.1",
+  "description": "A lightweight requests manager for rest apis",
+  "repository": "https://github.com/synw/restmix",
+  "scripts": {
+    "build": "rm -f dist/* && rollup -c"
+  },
+  "dependencies": {
+    "js-cookie": "^3.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.2",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "@types/js-cookie": "^3.0.1",
+    "@types/node": "^16.10.2",
+    "rollup": "^2.70.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/api.cjs.min.js",
+  "module": "./dist/api.es.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/api.es.js",
+      "require": "./dist/api.cjs.min.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT"
+}
