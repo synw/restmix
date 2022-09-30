@@ -4,4 +4,4 @@
 
 A lightweight requests manager for rest apis
 
-[Documentation](https://synw.github.io/restmix)
+:books: [Documentation](https://synw.github.io/restmix)

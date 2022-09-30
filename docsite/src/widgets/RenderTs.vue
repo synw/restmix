@@ -16,7 +16,7 @@ import { ref } from 'vue';
 import { CodeEditor } from "vuecodit";
 import "vuecodit/style.css";
 import "highlight.js/styles/stackoverflow-dark.css";
-import { api } from '@/state';
+import { api, apiDemo } from '@/state';
 import { hljs } from "@/conf"
 import { ResponseError } from "../../../src/errors";
 
@@ -37,7 +37,7 @@ function codeChange(e: string) {
 async function runCode() {
   // execute the code
   const c = ts.transpile(editedCode.value)
-  globalThis["api"] = api;
+  globalThis["api"] = apiDemo;
   globalThis["ResponseError"] = ResponseError;
   const res = await Object.getPrototypeOf(async function () { }).constructor(c)();
   //console.log(typeof res, res);
