@@ -8,6 +8,14 @@ import IconsResolver from 'unplugin-icons/resolver'
 import { libName } from "./src/conf";
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        chunkFileNames: "[hash][name].js",
+        assetFileNames: "assets/[hash][name].[ext]",
+      }
+    }
+  },
   plugins: [
     typescript2({
       check: false,
