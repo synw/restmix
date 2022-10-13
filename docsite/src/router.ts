@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/apidoc/:file",
+    path: "/apidoc/:file+",
     component: () => import("./views/MdApiFileView.vue"),
     meta: {
       title: "Apidoc"

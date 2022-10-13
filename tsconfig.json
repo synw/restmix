@@ -14,7 +14,8 @@
     "removeComments": true,
     "strictFunctionTypes": true,
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "lib": [
       "es2015",
@@ -34,11 +35,22 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "test/**/*.spec.ts",
+    "test/test.ts"
   ],
   "exclude": [
     "node_modules",
     "dist"
-  ]
+  ],
+  "typedocOptions": {
+    "name": "Restmix documentation",
+    "readme": "none",
+    "entryPoints": [
+      "src/interfaces.ts",
+      "src/api.ts",
+      "src/errors.ts",
+    ],
+    "out": "docsite/public/apidoc/auto",
+  }
 }

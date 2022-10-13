@@ -1,6 +1,6 @@
 <template>
   <div class="p-3">
-    <render-md-file :file-url="`/apidoc/${file}.md`" :hljs="hljs"></render-md-file>
+    <render-md-file :file-url="`/apidoc/${file.replaceAll(',','/')}.md`" :hljs="hljs"></render-md-file>
   </div>
 </template>
 

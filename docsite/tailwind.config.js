@@ -5,7 +5,6 @@ module.exports = {
     './index.html',
     './src/**/*.{js,jsx,ts,tsx,vue}',
     './node_modules/@snowind/**/*.{vue,js,ts}',
-    './node_modules/vuepython/**/*.{vue,js,ts}',
     './node_modules/vuecodit/**/*.{vue,js,ts}',
   ],
   darkMode: 'class',
@@ -20,6 +19,18 @@ module.exports = {
       maxWidth: {
         'prose': '100ch',
       },
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            'code::before': {
+              content: 'normal',
+            },
+            'code::after': {
+              content: 'normal',
+            },
+          },
+        },
+      }),
       semanticColors: {
         primary: {
           light: {
