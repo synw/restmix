@@ -1,4 +1,3 @@
-import exp from 'constants';
 import { useApi } from '../src/main';
 
 const api = useApi({
@@ -25,4 +24,19 @@ describe('my test', () => {
       expect(e.content).toEqual({ "ok": false })
     }
   });
+  it('post', async () => {
+    const payload = { foo: "bar" };
+    const res = await api.post<Record<string, any>>("/post", payload);
+    expect(res).toEqual({ response: "ok" })
+  });
+  it('put', async () => {
+    const payload = { foo: "bar" };
+    const res = await api.put<Record<string, any>>("/put", payload);
+    expect(res).toEqual({ response: "ok" })
+  });
+  /*it('patch', async () => {
+    const payload = { foo: "bar" };
+    const res = await api.patch<Record<string, any>>("/patch", payload, true);
+    expect(res).toEqual({ response: "ok" })
+  });*/
 });

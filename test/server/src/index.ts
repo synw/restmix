@@ -26,4 +26,16 @@ app.get('/403', (req: Request, res: Response) => {
   res.status(403).send({ "ok": false })
 });
 
+app.post('/post', function (req, res) {
+  res.send({ "response": "ok" });
+});
+
+app.put('/put', function (req, res) {
+  res.send({ "response": "ok" });
+});
+
+app.patch('/patch', function (req, res) {
+  res.send({ "response": "ok" });
+});
+
 app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
