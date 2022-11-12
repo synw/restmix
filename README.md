@@ -7,7 +7,7 @@ A lightweight Typescript friendly requests manager for rest apis
 :books: [Documentation](https://synw.github.io/restmix)
 
 ```ts
-import { useApi } from 'restmix';
+import { useApi, ApiResponse } from 'restmix';
 
 const api = useApi();
 
@@ -18,11 +18,11 @@ interface TodoItemContract {
   completed: boolean;
 }
 
-const res: TodoItemContract = await api.get<TodoItemContract>(
+const res: ApiResponse<TodoItemContract> = await api.get<TodoItemContract>(
   "https://jsonplaceholder.typicode.com/todos/1",
 );
 if (res.ok) {
-  console.log("response data:", resp.data)
+  console.log("response data:", res.data)
 } else {
   throw new Error(res.status)
 }
