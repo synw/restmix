@@ -7,13 +7,14 @@ interface UseApiParams {
   mode?: RequestMode;
 }
 
-/** The response error contructor params */
-interface ResponseErrorParams {
+/** The standard api response with typed data */
+interface ApiResponse<T = Record<string, any> | Array<any>> {
+  ok: boolean;
+  headers: Record<string, string>;
   status: number;
   statusText: string;
-  content?: Record<string, any> | Array<any>;
-  text?: string;
-  errMsg?: string;
+  data: T;
+  text: string;
 }
 
-export { UseApiParams, ResponseErrorParams }
+export { UseApiParams, ApiResponse }

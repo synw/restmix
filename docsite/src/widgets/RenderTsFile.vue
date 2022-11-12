@@ -22,7 +22,12 @@ const isReady = ref(false);
 let code = ref("");
 
 async function load() {
-  code.value = await api.get<string>(props.fileUrl);
+  const res = await api.get<string>(props.fileUrl);
+  if (res.ok) {
+    code.value = res.text
+  } else {
+    throw new Error(`Response error ${res}`)
+  }
   if (code.value.startsWith("// @ts-nocheck")) {
     code.value = code.value.replace("// @ts-nocheck\n", "")
   }

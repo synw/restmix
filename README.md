@@ -21,4 +21,9 @@ interface TodoItemContract {
 const res: TodoItemContract = await api.get<TodoItemContract>(
   "https://jsonplaceholder.typicode.com/todos/1",
 );
+if (res.ok) {
+  console.log("response data:", resp.data)
+} else {
+  throw new Error(res.status)
+}
 ```

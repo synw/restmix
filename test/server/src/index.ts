@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import cors from 'cors';
+var morgan = require('morgan')
 
 dotenv.config();
 
@@ -11,11 +12,16 @@ const app: Express = express();
 
 app.use(cors({ origin: ["http://localhost:3000", "http://localhost:5173"], credentials: true }))
 app.use(helmet());
+app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req: Request, res: Response) => {
   res.send({ "response": "ok" })
+});
+
+app.get('/204', (req: Request, res: Response) => {
+  res.status(204).send()
 });
 
 app.get('/401', (req: Request, res: Response) => {
@@ -38,4 +44,4 @@ app.patch('/patch', function (req, res) {
   res.send({ "response": "ok" });
 });
 
-app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
+app.listen(PORT, () => console.log(`Test server running on ${PORT} ⚡`));

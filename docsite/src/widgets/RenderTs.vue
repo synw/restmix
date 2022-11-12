@@ -4,7 +4,7 @@
       <code-editor :code="props.code" lang="typescript" @edit="codeChange($event)" :hljs="hljs"></code-editor>
     </div>
     <button class="mt-3 btn secondary" @click="runCode()">Run</button>
-    <div class="p-3 mt-5 rounded-md code-content w-max block-lighter" v-if="result.length>0">
+    <div class="p-3 mt-5 rounded-md code-content w-max block-lighter" v-if="result.length    >    0">
       <pre><code v-html="result"></code></pre>
     </div>
   </div>
@@ -16,9 +16,8 @@ import { ref } from 'vue';
 import { CodeEditor } from "vuecodit";
 import "vuecodit/style.css";
 import "highlight.js/styles/stackoverflow-dark.css";
-import { api, apiDemo } from '@/state';
+import { apiDemo } from '@/state';
 import { hljs } from "@/conf"
-import { ResponseError } from "../../../src/errors";
 
 const props = defineProps({
   code: {
@@ -38,7 +37,7 @@ async function runCode() {
   // execute the code
   const c = ts.transpile(editedCode.value)
   globalThis["api"] = apiDemo;
-  globalThis["ResponseError"] = ResponseError;
+  //globalThis["ResponseError"] = ResponseError;
   const res = await Object.getPrototypeOf(async function () { }).constructor(c)();
   //console.log(typeof res, res);
   let code: string;

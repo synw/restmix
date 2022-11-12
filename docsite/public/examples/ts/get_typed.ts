@@ -10,4 +10,4 @@ const res = await api.get<TodoItemContract>(
   "https://jsonplaceholder.typicode.com/todos/1",
   true
 );
-return res.title
+return res.data

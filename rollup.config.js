@@ -6,12 +6,12 @@ import { terser } from 'rollup-plugin-terser';
 //const isProduction = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: 'src/api.ts',
+  input: 'src/main.ts',
   output: [
     {
       file: 'dist/api.cjs.min.js',
       format: 'cjs',
-      plugins: [terser()]
+      plugins: [terser(),]
     },
     {
       file: 'dist/api.es.js',

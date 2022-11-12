@@ -25,7 +25,11 @@ const isReady = ref(false);
 
 async function load() {
   isReady.value = false;
-  code.value = await api.get<string>(props.fileUrl);
+  const res = await api.get<string>(props.fileUrl);
+  console.log("RES", JSON.stringify(res, null, "  "))
+  if (res.ok) {
+    code.value = res.text
+  }
   isReady.value = true;
 }
 
