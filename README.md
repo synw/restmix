@@ -22,8 +22,11 @@ const res: ApiResponse<TodoItemContract> = await api.get<TodoItemContract>(
   "https://jsonplaceholder.typicode.com/todos/1",
 );
 if (res.ok) {
-  console.log("response data:", res.data)
+  // status code is in the 200/299 range
+  const data: TodoItemContract = res.data;
 } else {
+  // status code is > 299
+  const responseStatus: number = res.status;
   throw new Error(res.status)
 }
 ```
