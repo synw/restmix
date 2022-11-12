@@ -7,6 +7,12 @@
       <div>
         <button class="btn" @click="open('/apidoc/options')">Options</button>
       </div>
+      <div>
+        <button class="btn" @click="open('/apidoc/how')">How it works</button>
+      </div>
+      <div>
+        <button class="btn" @click="open('/apidoc/response')">Response</button>
+      </div>
     </div>
     <div class="mt-5 text-xl">Methods</div>
     <div class="flex flex-col mt-3 space-y-1">
