@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { ApiResponse, UseApiParams } from './interfaces';
+import { ApiResponse, OnResponseHook, UseApiParams } from './interfaces';
 
 /** The main api composable */
 const useApi = (params: UseApiParams = {
@@ -17,6 +17,8 @@ const useApi = (params: UseApiParams = {
   let _credentials: RequestCredentials | null = params.credentials ?? "include";
   // state
   let csrfToken: string | null = null;
+  // hooks
+  let _onResponse: OnResponseHook;
 
   const hasCsrfCookie = (): boolean => {
     const cookie = Cookies.get(_csrfCookieName);
@@ -32,6 +34,11 @@ const useApi = (params: UseApiParams = {
       throw ("Csrf cookie not found")
     }
     return c
+  }
+
+  /** Set the on response hook */
+  const onResponse = (hook: OnResponseHook) => {
+    _onResponse = hook;
   }
 
   /** Set a csrf token to use with request headers */
@@ -58,8 +65,9 @@ const useApi = (params: UseApiParams = {
   const _processResponse = async <T>(response: Response): Promise<ApiResponse<T>> => {
     const head: Record<string, string> = {};
     response.headers.forEach((v, k) => head[k] = v);
-    const apiResp: ApiResponse<T> = {
+    let apiResp: ApiResponse<T> = {
       ok: response.ok,
+      url: response.url,
       headers: head,
       status: response.status,
       statusText: response.statusText,
@@ -75,6 +83,9 @@ const useApi = (params: UseApiParams = {
       } catch (e) {
         throw new Error(`Json parsing error: ${e}`);
       }
+    }
+    if (_onResponse) {
+      apiResp = await _onResponse(apiResp)
     }
     return apiResp
   }
@@ -190,6 +201,7 @@ const useApi = (params: UseApiParams = {
     hasCsrfCookie,
     setCsrfToken,
     setCsrfTokenFromCookie,
+    onResponse,
     get,
     post,
     put,

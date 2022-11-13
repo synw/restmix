@@ -10,6 +10,7 @@ interface UseApiParams {
 /** The standard api response with typed data */
 interface ApiResponse<T = Record<string, any> | Array<any>> {
   ok: boolean;
+  url: string;
   headers: Record<string, string>;
   status: number;
   statusText: string;
@@ -17,4 +18,7 @@ interface ApiResponse<T = Record<string, any> | Array<any>> {
   text: string;
 }
 
-export { UseApiParams, ApiResponse }
+/** The on response hook type */
+type OnResponseHook = <T>(res: ApiResponse<T>) => Promise<ApiResponse<T>>;
+
+export { UseApiParams, ApiResponse, OnResponseHook }
