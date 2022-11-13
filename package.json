@@ -1,6 +1,6 @@
 {
   "name": "restmix",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A lightweight requests manager for rest apis",
   "repository": "https://github.com/synw/restmix",
   "scripts": {

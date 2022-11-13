@@ -85,7 +85,7 @@ const useApi = (params: UseApiParams = {
       }
     }
     if (_onResponse) {
-      apiResp = await _onResponse(apiResp)
+      apiResp = await _onResponse<T>(apiResp)
     }
     return apiResp
   }
