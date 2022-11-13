@@ -33,7 +33,7 @@ It is possible to set a hook that will process every response before returning
 it. This can be useful to automate some reactions to different status codes and
 scenarios. 
 
-Set up an <kbd>onResponse<kbd> hook:
+Set up an <kbd>onResponse</kbd> hook:
 
 ```ts
 api.onResponse(async <T>(res: ApiResponse<T>): Promise<ApiResponse<T>> => {
