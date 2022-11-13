@@ -27,6 +27,21 @@ if (res.ok) {
 } else {
   // status code is > 299
   const responseStatus: number = res.status;
-  throw new Error(res.status)
+  throw new Error(res.statusText)
+}
+```
+
+It is the same as [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) except that it takes care of the response
+body parsing and delivers typed data
+
+```ts
+interface ApiResponse<T = Record<string, any> | Array<any>> {
+  ok: boolean;
+  url: string;
+  headers: Record<string, string>;
+  status: number;
+  statusText: string;
+  data: T;
+  text: string;
 }
 ```
