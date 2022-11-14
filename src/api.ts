@@ -16,9 +16,11 @@ const useApi = (params: UseApiParams = {
   let _mode = params?.mode ?? "cors";
   let _credentials: RequestCredentials | null = params.credentials ?? "include";
   // state
-  let csrfToken: string | null = null;
+  let _csrfToken: string | null = null;
   // hooks
   let _onResponse: OnResponseHook;
+
+  const csrfToken = () => _csrfToken;
 
   const hasCsrfCookie = (): boolean => {
     const cookie = Cookies.get(_csrfCookieName);
@@ -43,15 +45,15 @@ const useApi = (params: UseApiParams = {
 
   /** Set a csrf token to use with request headers */
   const setCsrfToken = (token: string) => {
-    csrfToken = token;
+    _csrfToken = token;
   }
 
   /** Get the csrf token from a cookie and set it to use with request headers */
   const setCsrfTokenFromCookie = (verbose = false): boolean => {
     if (hasCsrfCookie()) {
-      csrfToken = _csrfFromCookie();
+      _csrfToken = _csrfFromCookie();
       if (verbose) {
-        console.log("User logged in with csrf cookie, setting api token", csrfToken);
+        console.log("User logged in with csrf cookie, setting api token", _csrfToken);
       }
       return true
     } else {
@@ -168,9 +170,9 @@ const useApi = (params: UseApiParams = {
     if (_credentials !== null) {
       h.credentials = _credentials
     }
-    if (csrfToken !== null) {
+    if (_csrfToken !== null) {
       h.headers = { "Content-Type": "application/json" }
-      h.headers[_csrfHeaderKey] = csrfToken;
+      h.headers[_csrfHeaderKey] = _csrfToken;
     }
     return h;
   }
@@ -190,8 +192,8 @@ const useApi = (params: UseApiParams = {
     if (_credentials !== null) {
       r.credentials = _credentials
     }
-    if (csrfToken !== null) {
-      r.headers[_csrfHeaderKey] = csrfToken;
+    if (_csrfToken !== null) {
+      r.headers[_csrfHeaderKey] = _csrfToken;
     }
     return r;
   }
