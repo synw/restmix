@@ -3,7 +3,7 @@
 Start the test server:
 
 ```bash
-cd tests/server
+cd test/server
 yarn start
 ```
 

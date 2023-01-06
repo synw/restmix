@@ -76,14 +76,16 @@ const useApi = (params: UseApiParams = {
       data: {} as unknown as T,
       text: "",
     }
-    if (!response.headers.get("Content-Type")?.startsWith("application/json")) {
-      const txt = await response.text();
-      apiResp.text = txt;
-    } else {
-      try {
-        apiResp.data = (await response.json()) as T
-      } catch (e) {
-        throw new Error(`Json parsing error: ${e}`);
+    if (!(response.status == 204)) {
+      if (!response.headers.get("Content-Type")?.startsWith("application/json")) {
+        const txt = await response.text();
+        apiResp.text = txt;
+      } else {
+        try {
+          apiResp.data = (await response.json()) as T
+        } catch (e) {
+          console.warn(`Json parsing error: ${e}`);
+        }
       }
     }
     if (_onResponse) {

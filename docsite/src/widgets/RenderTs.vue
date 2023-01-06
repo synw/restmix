@@ -4,14 +4,14 @@
       <code-editor :code="props.code" lang="typescript" @edit="codeChange($event)" :hljs="hljs"></code-editor>
     </div>
     <button class="mt-3 btn secondary" @click="runCode()">Run</button>
-    <div class="p-3 mt-5 rounded-md code-content w-max block-lighter" v-if="result.length    >    0">
+    <div class="p-3 mt-5 rounded-md code-content w-max block-lighter" v-if="result.length > 0">
       <pre><code v-html="result"></code></pre>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import * as ts from "typescript";
+import { transpile } from "typescript";
 import { ref } from 'vue';
 import { CodeEditor } from "vuecodit";
 import "vuecodit/style.css";
@@ -35,7 +35,7 @@ function codeChange(e: string) {
 }
 async function runCode() {
   // execute the code
-  const c = ts.transpile(editedCode.value)
+  const c = transpile(editedCode.value)
   globalThis["api"] = apiDemo;
   //globalThis["ResponseError"] = ResponseError;
   const res = await Object.getPrototypeOf(async function () { }).constructor(c)();
