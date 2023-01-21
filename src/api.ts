@@ -17,6 +17,8 @@ const useApi = (params: UseApiParams = {
   let _credentials: RequestCredentials | null = params.credentials ?? "include";
   // state
   let _csrfToken: string | null = null;
+  let _extraHeaders: Record<string, string> = {};
+  let _hasExtraHeaders = false;
   // hooks
   let _onResponse: OnResponseHook;
 
@@ -36,6 +38,18 @@ const useApi = (params: UseApiParams = {
       throw ("Csrf cookie not found")
     }
     return c
+  }
+
+  const addHeader = (key: string, val: string) => {
+    _extraHeaders[key] = val;
+    _hasExtraHeaders = true;
+  }
+
+  const removeHeader = (key: string) => {
+    delete _extraHeaders[key];
+    if (Object.keys(_extraHeaders).length == 0) {
+      _hasExtraHeaders = false
+    }
   }
 
   /** Set the on response hook */
@@ -166,16 +180,13 @@ const useApi = (params: UseApiParams = {
   const _getHeader = (method: string = "get"): RequestInit => {
     const h = {
       method: method,
-      headers: { "Content-Type": "application/json" },
       mode: _mode,
     } as RequestInit;
     if (_credentials !== null) {
       h.credentials = _credentials
     }
-    if (_csrfToken !== null) {
-      h.headers = { "Content-Type": "application/json" }
-      h.headers[_csrfHeaderKey] = _csrfToken;
-    }
+    const headers = { "Content-Type": "application/json" }
+    h.headers = _getBaseHeaders(headers);
     return h;
   }
 
@@ -186,18 +197,29 @@ const useApi = (params: UseApiParams = {
       mode: _mode,
       body: pl
     };
+    let headers: Record<string, any>;
     if (!multipart) {
-      r.headers = { "Content-Type": "application/json" }
+      headers = { "Content-Type": "application/json" }
     } else {
-      r.headers = { "Content-Type": "multipart/form-data" }
+      headers = { "Content-Type": "multipart/form-data" }
     }
     if (_credentials !== null) {
       r.credentials = _credentials
     }
-    if (_csrfToken !== null) {
-      r.headers[_csrfHeaderKey] = _csrfToken;
-    }
+    r.headers = _getBaseHeaders(headers);
     return r;
+  }
+
+  function _getBaseHeaders(headers: Record<string, string>): Record<string, string> {
+    if (_csrfToken !== null) {
+      headers[_csrfHeaderKey] = _csrfToken;
+    }
+    if (_hasExtraHeaders) {
+      for (const [k, v] of Object.entries(_extraHeaders)) {
+        headers[k] = v
+      }
+    }
+    return headers
   }
 
   return {
@@ -205,6 +227,8 @@ const useApi = (params: UseApiParams = {
     hasCsrfCookie,
     setCsrfToken,
     setCsrfTokenFromCookie,
+    addHeader,
+    removeHeader,
     onResponse,
     get,
     post,
