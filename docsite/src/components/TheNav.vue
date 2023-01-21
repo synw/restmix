@@ -37,6 +37,9 @@
       <div>
         <button class="btn" @click="open('/ts/csrf')">Csrf tokens</button>
       </div>
+      <div>
+        <button class="btn" @click="open('/ts/headers')">Extra headers</button>
+      </div>
     </div>
   </div>
 </template>

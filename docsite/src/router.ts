@@ -61,6 +61,13 @@ const routes: Array<RouteRecordRaw> = [
       title: "Csrf tokens"
     }
   },
+  {
+    path: "/ts/headers",
+    component: () => import("./views/ExtraHeadersView.vue"),
+    meta: {
+      title: "Extra headers"
+    },
+  }
 ]
 
 const router = createRouter({
