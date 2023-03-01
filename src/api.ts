@@ -197,11 +197,9 @@ const useApi = (params: UseApiParams = {
       mode: _mode,
       body: pl
     };
-    let headers: Record<string, any>;
+    let headers: Record<string, any> = {};
     if (!multipart) {
       headers = { "Content-Type": "application/json" }
-    } else {
-      headers = { "Content-Type": "multipart/form-data" }
     }
     if (_credentials !== null) {
       r.credentials = _credentials
