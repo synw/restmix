@@ -4,7 +4,7 @@
       <code-editor :code="props.code" lang="typescript" @edit="codeChange($event)" :hljs="hljs"></code-editor>
     </div>
     <button class="mt-3 btn secondary" @click="runCode()">Run</button>
-    <div class="p-3 mt-5 rounded-md code-content w-max block-lighter" v-if="result.length > 0">
+    <div class="p-3 mt-5 rounded-md w-max" v-if="result.length > 0">
       <pre><code v-html="result"></code></pre>
     </div>
   </div>
@@ -49,7 +49,6 @@ async function runCode() {
     }
     result.value = code;
   }
-
 }
 </script>
 

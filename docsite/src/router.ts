@@ -34,6 +34,13 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: "/ts/postsse",
+    component: () => import("./views/ts/TsPostSseView.vue"),
+    meta: {
+      title: "Post sse request"
+    }
+  },
+  {
     path: "/ts/put",
     component: () => import("./views/ts/TsPutView.vue"),
     meta: {
@@ -60,6 +67,13 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: "Csrf tokens"
     }
+  },
+  {
+    path: "/ts/apikey",
+    component: () => import("./views/ApiKeyView.vue"),
+    meta: {
+      title: "Api key"
+    },
   },
   {
     path: "/ts/headers",

@@ -23,6 +23,9 @@
         <button class="btn" @click="open('/ts/post')">Post</button>
       </div>
       <div>
+        <button class="btn" @click="open('/ts/postsse')">Post sse</button>
+      </div>
+      <div>
         <button class="btn" @click="open('/ts/put')">Put</button>
       </div>
     </div>
@@ -34,6 +37,9 @@
     </div>
     <div class="mt-5 text-xl">Headers</div>
     <div class="flex flex-col mt-3 space-y-1">
+      <div>
+        <button class="btn" @click="open('/ts/apikey')">Api key</button>
+      </div>
       <div>
         <button class="btn" @click="open('/ts/csrf')">Csrf tokens</button>
       </div>
