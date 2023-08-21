@@ -108,6 +108,43 @@ const useApi = (params: UseApiParams = {
     return apiResp
   }
 
+  /** Post request with server sent events streaming response support */
+  const postSse = async<T>(
+    uri: string,
+    payload: Array<any> | Record<string, any> | FormData,
+    onChunk: (payload: T) => void,
+    abortController: AbortController,
+    multipart: boolean = false,
+    verbose = false
+  ): Promise<void> => {
+    addHeader('Accept', 'text/event-stream');
+    const opts = _postHeader(payload, "post", multipart);
+    opts.signal = abortController.signal;
+    let url = _serverUrl + uri;
+    if (verbose) {
+      console.log("POST SSE", url);
+      console.log(JSON.stringify(opts, null, "  "));
+    }
+    const response = await fetch(url, opts);
+    if (response.body) {
+      const reader = response.body.getReader();  // @ts-ignore
+      const decoder = new TextDecoder();
+      while (true) {
+        const result = await reader.read();
+        if (result.done) {
+          break
+        }
+        const text = decoder.decode(result.value);
+        const rawText = text.replace(/data: |[\r\n]/g, '');
+        let data: T | string = rawText;
+        try {
+          data = JSON.parse(rawText) as T;
+        } catch (e) { }
+        onChunk(data as T)
+      }
+    }
+  }
+
   /** Post request */
   const post = async <T>(
     uri: string,
@@ -233,6 +270,7 @@ const useApi = (params: UseApiParams = {
     put,
     patch,
     del,
+    postSse,
   }
 }
 
