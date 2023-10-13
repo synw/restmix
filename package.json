@@ -1,6 +1,6 @@
 {
   "name": "restmix",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A lightweight requests manager for rest apis",
   "repository": "https://github.com/synw/restmix",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "jest --coverage",
     "docs": "typedoc --entryPointStrategy expand"
   },
-  "dependencies": {    
+  "dependencies": {
     "js-cookie": "^3.0.5"
   },
   "devDependencies": {

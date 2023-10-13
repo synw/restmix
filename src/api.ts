@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { ApiResponse, OnResponseHook, UseApiParams } from './interfaces';
+import { ApiResponse, OnResponseHook, UseApiParams } from './interfaces.js';
 
 /** The main api composable */
 const useApi = (params: UseApiParams = {
