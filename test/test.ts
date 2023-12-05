@@ -1,4 +1,4 @@
-import { useApi } from '../src/main';
+import { useApi } from '../src/api';
 
 const api = useApi({
   serverUrl: 'http://localhost:5714',
