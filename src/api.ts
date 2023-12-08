@@ -116,7 +116,8 @@ const useApi = (params: UseApiParams = {
     abortController: AbortController,
     parseJson: boolean = true,
     multipart: boolean = false,
-    verbose: boolean = false
+    verbose: boolean = false,
+    debug: boolean = false,
   ): Promise<void> => {
     addHeader('Accept', 'text/event-stream');
     const opts = _postHeader(payload, "post", multipart);
@@ -138,7 +139,9 @@ const useApi = (params: UseApiParams = {
         const text = decoder.decode(result.value);
         const rawText = text.replace(/data: |[\r\n]/g, '');
         let data: T | string = rawText;
-        //console.log("DATA>>>>", rawText, "<<<<END");
+        if (debug) {
+          console.log("DATA>>>>", rawText, "<<<<END");
+        }
         if (parseJson)
           try {
             data = JSON.parse(rawText) as T;
