@@ -137,7 +137,9 @@ const useApi = (params: UseApiParams = {
           break
         }
         const text = decoder.decode(result.value);
-        const rawText = text.replace(/data: |[\r\n]/g, '');
+        //const rawText = text.replace(/data: |[\r\n]/g, '');
+        const regex = /data: |\n\n(?=$)/g;
+        const rawText = text.replace(regex, '');
         let data: T | string = rawText;
         if (debug) {
           console.log("DATA>>>>", rawText, "<<<<END");
