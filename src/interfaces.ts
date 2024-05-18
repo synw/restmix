@@ -1,3 +1,6 @@
+type RequestCredentials = 'omit' | 'include' | 'same-origin';
+type RequestMode = 'cors' | 'no-cors' | 'same-origin' | 'navigate';
+
 /** The composable parameters */
 interface UseApiParams {
   serverUrl?: string;
@@ -21,4 +24,4 @@ interface ApiResponse<T = Record<string, any> | Array<any>> {
 /** The on response hook type */
 type OnResponseHook = <T>(res: ApiResponse<T>) => Promise<ApiResponse<T>>;
 
-export { UseApiParams, ApiResponse, OnResponseHook }
+export { UseApiParams, ApiResponse, OnResponseHook, RequestCredentials, RequestMode }
