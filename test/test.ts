@@ -4,7 +4,7 @@ const api = useApi({
   serverUrl: 'http://localhost:5714',
 });
 
-describe('my test', () => {
+describe('tests', () => {
   it('200', async () => {
     const res = await api.get<Record<string, any>>("/");
     expect(res.data).toEqual({ response: "ok" })
