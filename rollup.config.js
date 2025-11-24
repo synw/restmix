@@ -18,7 +18,12 @@ export default {
       plugins: [terser()]
     }],
   plugins: [
-    typescript(),
+    typescript({
+      tsconfig: './tsconfig.json',
+      declaration: true,
+      declarationDir: './dist',
+      emitDeclarationOnly: true
+    }),
     resolve({
       jsnext: true,
       main: true,
