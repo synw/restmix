@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import cors from 'cors';
-var morgan = require('morgan')
+import morgan from "morgan";
 
 dotenv.config();
 
@@ -32,15 +32,15 @@ app.get('/403', (req: Request, res: Response) => {
   res.status(403).send({ "ok": false })
 });
 
-app.post('/post', function (req, res) {
+app.post('/post', function(req, res) {
   res.send({ "response": "ok" });
 });
 
-app.put('/put', function (req, res) {
+app.put('/put', function(req, res) {
   res.send({ "response": "ok" });
 });
 
-app.patch('/patch', function (req, res) {
+app.patch('/patch', function(req, res) {
   res.send({ "response": "ok" });
 });
 

@@ -1,16 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "outDir": "dist",
+    "target": "es2015",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "strict": true,
+    "sourceMap": false,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "allowJs": true,
+    "removeComments": true,
+    "strictFunctionTypes": true,
     "types": [
       "node",
-      "jsonwebtoken"
+      "jsonwebtoken",
+      "morgan"
     ]
   }
 }
