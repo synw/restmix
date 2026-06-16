@@ -5,29 +5,32 @@
   "repository": "https://github.com/synw/restmix",
   "scripts": {
     "build": "rm -f dist/* && rollup -c",
-    "test": "jest --coverage",
+    "test:server": "cd test/server && npm run build && node dist/index.js",
+    "test": "start-server-and-test 'npm run test:server' http://localhost:5714 'jest --coverage'",
+    "test:auto": "./test/run-tests.sh",
     "docs": "typedoc --entryPointStrategy expand"
   },
   "dependencies": {
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.8"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
-    "@rollup/plugin-terser": "^0.4.4",
     "@types/jest": "^30.0.0",
     "@types/js-cookie": "^3.0.6",
-    "@types/node": "^24.10.1",
-    "jest": "^30.2.0",
+    "@types/node": "^25.9.3",
+    "jest": "^30.4.2",
     "markdown-it-replace-link": "^1.2.2",
-    "rollup": "^4.53.3",
-    "ts-jest": "^29.4.5",
+    "rollup": "^4.62.0",
+    "start-server-and-test": "^3.0.11",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
-    "typedoc": "^0.28.14",
-    "typedoc-plugin-markdown": "^4.9.0",
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-markdown": "^4.12.0",
     "typedoc-plugin-rename-defaults": "^0.7.3",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "files": [
     "dist"
