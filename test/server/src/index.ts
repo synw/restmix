@@ -20,6 +20,16 @@ app.get('/', (req: Request, res: Response) => {
   res.send({ "response": "ok" })
 });
 
+app.get('/text', (req: Request, res: Response) => {
+  res.set('Content-Type', 'text/plain');
+  res.send('plain text response');
+});
+
+app.get('/invalid-json', (req: Request, res: Response) => {
+  res.set('Content-Type', 'application/json');
+  res.send('{ "invalid json');
+});
+
 app.get('/204', (req: Request, res: Response) => {
   res.status(204).send()
 });
@@ -42,6 +52,23 @@ app.put('/put', function(req, res) {
 
 app.patch('/patch', function(req, res) {
   res.send({ "response": "ok" });
+});
+
+app.delete('/del', (req: Request, res: Response) => {
+  res.send({ "response": "ok" });
+});
+
+app.delete('/del/404', (req: Request, res: Response) => {
+  res.status(404).send({ "error": "not found" });
+});
+
+app.get('/csrf-set', (req: Request, res: Response) => {
+  res.cookie('csrftoken', 'test-token');
+  res.send({ "csrf": "test-token" });
+});
+
+app.get('/headers', (req: Request, res: Response) => {
+  res.send({ headers: req.headers });
 });
 
 app.listen(PORT, () => console.log(`Test server running on ${PORT} ⚡`));
