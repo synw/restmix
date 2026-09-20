@@ -1,48 +1,56 @@
 # Task State: improve-test-coverage
 
-## Metadata
-- **Task ID:** improve-test-coverage
-- **Created:** 2025-01-XX
-- **Status:** completed
-- **Assignee:** Lynx Coder
+## Status: planned (not started)
+
+## Organization
+This task uses a coordinator-executor model:
+- **Coordinator Agent** reads `execute-instructions.md` and delegates phases
+- **Executor Agents** read only their assigned phase file in `phases/` directory
+
+## Phase Files
+| Phase | File | Steps |
+|-------|------|-------|
+| 1: DELETE method tests | `phases/phase-1.md` | 3 |
+| 2: _processResponse() edge cases | `phases/phase-2.md` | 4 |
+| 3: CSRF error paths | `phases/phase-3.md` | 4 |
+| 4: Header management | `phases/phase-4.md` | 4 |
+| 5: Verbose/debug branches | `phases/phase-5.md` | 5 |
+| 6: Get the coverage stats | `phases/phase-6.md` | 1 |
 
 ## Progress
 
-### Phase 1: DELETE method tests
-- [x] Add DELETE mock endpoints in test server
-- [x] Add DELETE success test
-- [x] Add DELETE error test
-- **Status:** completed
+### Phase 1: DELETE method tests ✅ COMPLETED
+- [x] Step 1.1: Add DELETE mock endpoints in test server
+- [x] Step 1.2: Add DELETE success test
+- [x] Step 1.3: Add DELETE error test
 
-### Phase 2: _processResponse() edge cases
-- [x] Add non-JSON Content-Type mock endpoint
-- [x] Add invalid JSON mock endpoint
-- [x] Add test for non-JSON response
-- [x] Add test for invalid JSON parsing
-- [x] Enhance 204 test
-- **Status:** completed
+### Phase 2: _processResponse() edge cases ✅ COMPLETED
+- [x] Step 2.1: Add non-JSON Content-Type mock endpoints
+- [x] Step 2.2: Add test for non-JSON response
+- [x] Step 2.3: Add test for invalid JSON parsing
+- [x] Step 2.4: Enhance 204 test with additional assertions
 
-### Phase 3: CSRF error paths
-- [x] Add CSRF cookie mock endpoint
-- [x] Add test: hasCsrfCookie returns false
-- [x] Add test: setCsrfTokenFromCookie returns false with verbose
-- [x] Add test: setCsrfTokenFromCookie returns true with cookie
-- **Status:** completed
+### Phase 3: CSRF error paths ✅ COMPLETED
+- [x] Step 3.1: Add CSRF cookie mock endpoint
+- [x] Step 3.2: Add test for hasCsrfCookie returns false
+- [x] Step 3.3: Add test for setCsrfTokenFromCookie returns false (no cookie)
+- [x] Step 3.4: Add test for setCsrfTokenFromCookie returns true (with cookie)
 
-### Phase 4: Header management
-- [x] Add header echo mock endpoint
-- [x] Add test: removeHeader clears headers
-- [x] Add test: extra headers included in requests
-- [x] Add test: multiple headers and partial removal
-- **Status:** completed
+### Phase 4: Header management ✅ COMPLETED
+- [x] Step 4.1: Add header echo mock endpoint
+- [x] Step 4.2: Add test for addHeader and verify in request
+- [x] Step 4.3: Add test for removeHeader clears headers
+- [x] Step 4.4: Add test for multiple headers and partial removal
 
-### Phase 5: Test verbose/debug branches
-- [x] Add test: verbose POST
-- [x] Add test: verbose PUT
-- [x] Add test: verbose PATCH
-- [x] Add test: verbose GET
-- [x] Add test: verbose DELETE
-- **Status:** completed
+### Phase 5: Verbose/debug branches ✅ COMPLETED
+- [x] Step 5.1: Add test for verbose POST
+- [x] Step 5.2: Add test for verbose PUT
+- [x] Step 5.3: Add test for verbose PATCH
+- [x] Step 5.4: Add test for verbose GET
+- [x] Step 5.5: Add test for verbose DELETE
+
+### Phase 6: Get the coverage stats ✅ COMPLETED
+- [x] Step 6: read the coverage stats and report
 
 ## Coverage Targets
 | Metric | Current | Target |
@@ -51,8 +59,11 @@
 | Functions | 71.4% | ≥85% |
 | Branches | 56.3% | ≥70% |
 
-## Success Criteria
-- All 5 phases completed ✅
-- All new tests pass ✅
-- Coverage meets or exceeds targets (pending verification)
-- No regressions in existing tests (pending verification)
+## Notes
+- Task created on: [date]
+- Last updated: [date]
+- Next phase to execute: Phase 1 (if starting fresh)
+- Coordinator reads `execute-instructions.md` for orchestration instructions
+- Executors read only their assigned `phases/phase-X.md` file
+
+When the task is finished present the coverage stats to the user in a Mermaid chart
