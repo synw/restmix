@@ -1,248 +1,174 @@
-> **Primary reference** — Comprehensive navigation map for the project.
-
 # Restmix — Project Navigation Map
+
+> Purpose: Single-reference map for AI coding agents to understand, navigate, and modify the Restmix codebase.
+
+---
 
 ## 1. Project Overview
 
-Restmix is a lightweight, TypeScript-friendly HTTP client library for REST APIs. It wraps the native `fetch` API to provide typed responses with automatic body parsing, CSRF token management, Server-Sent Events (SSE) streaming, custom headers, and response hooks.
+Single-repo TypeScript library (`restmix`) that wraps `fetch` and delivers typed REST responses via a composable `useApi()`. Source lives in `src/`; tests + express mock server in `test/`; build via rollup to `dist/`; documentation site in `docsite/`.
 
-| Module | Purpose |
-|--------|---------|
-| `restmix` (src/) | Core library: `useApi()` composable for HTTP requests |
-| `test/server` | Express.js mock server for integration testing |
-| `docsite` | Vite-built documentation website source |
+| Path | Purpose |
+|------|---------|
+| `src/main.ts` | Barrel export of the public API surface. |
+| `src/api.ts` | Core `useApi()` composable and HTTP methods. |
+| `src/interfaces.ts` | Public types (`ApiResponse`, `UseApiParams`, hooks). |
+| `test/test.ts` | Jest integration suite. |
+| `test/server/src/index.ts` | Express mock server for tests (port 5714). |
+| `rollup.config.js` | Rollup build config (ESM + IIFE). |
+| `docsite/` | Vite/Vue documentation site (separate package). |
 
-**Core capabilities:**
-- GET, POST, PUT, PATCH, DELETE HTTP methods with TypeScript generics
-- Server-Sent Events (SSE) streaming via `postSse()`
-- CSRF token management from cookies with configurable names/headers
-- Custom header injection/removal
-- Response hooks for interception and transformation
-- Automatic JSON/text body parsing based on Content-Type
-- Dual build output: ESM bundle + minified IIFE
+---
 
 ## 2. Architecture Principles
 
-| Principle | Detail | Key Files |
-|-----------|--------|-----------|
-| Composable factory | `useApi()` returns a client object, not a class instance | `src/api.ts` |
-| Generic typing | All methods use `<T>` for typed responses via `ApiResponse<T>` | `src/interfaces.ts` |
-| Hook middleware | `onResponse()` allows response interception before return | `src/api.ts` |
-| Minimal dependencies | Only `js-cookie` as runtime dependency | `package.json` |
-| Dual build output | ESM for bundlers, IIFE for direct browser use | `rollup.config.js` |
+The canonical "why" layer lives in the knowledge graph — do not restate it here:
+
+- Mental model (composable factory, closure state, request pipeline) → `lat.md/architecture.md`
+- Rationale & trade-offs (factory vs class, fetch wrapper, CSRF scheme) → `lat.md/design-decisions.md`
+- Find the right section with `lat search "<task>"`.
+
+File-level summary: all runtime logic (`useApi`, HTTP methods, `_processResponse`, `_getBaseHeaders`) lives in `src/api.ts`; public types live in `src/interfaces.ts`; the barrel `src/main.ts` re-exports both.
+
+---
 
 ## 3. Dependency Graph
 
 ```
-                    ┌─────────────┐
-                    │  src/api.ts  │
-                    │  (useApi)    │
-                    └──────┬───────┘
-                           │ uses
-              ┌────────────┼────────────┐
-              ▼            ▼            ▼
-        fetch API    js-cookie    src/interfaces.ts
-        (native)     (CSRF)      (types)
+                        ┌──────────────────────┐
+                        │       src/main.ts     │  (barrel export)
+                        └────────────┬───────────┘
+                                     │ re-exports
+                          ┌──────────┴───────────┐
+                          ▼                      ▼
+                   ┌──────────────┐       ┌──────────────────┐
+                   │    src/api.ts│       │  src/interfaces.ts │
+                   └──────┬───────┘       └──────────────────┘
+                          │ uses fetch + js-cookie
+                          ▼
+                external: window.fetch, js-cookie (cookies)
 ```
 
-**Prose:** The core `api.ts` depends on the native `fetch` API for all HTTP operations, `js-cookie` for CSRF token retrieval, and exports types defined in `interfaces.ts`. The `main.ts` re-exports everything for clean public API. The test server (`test/server/`) is an independent Express app used only for integration tests.
+Prose: `main.ts` re-exports the public surface from `api.ts` (runtime) and `interfaces.ts` (types). `api.ts` depends on `js-cookie` for CSRF cookie reads and on the platform `fetch`. `interfaces.ts` has no internal dependencies.
 
-## 4. Packages/Modules
+---
 
-### `restmix` (src/)
-- **Purpose**: Core HTTP client library
-- **Key files**:
-  - `src/api.ts` — `useApi()` composable implementation
-  - `src/interfaces.ts` — TypeScript type definitions
-  - `src/main.ts` — Public re-exports
-- **Key types/classes**:
-  - `useApi(params?: UseApiParams)` — Factory function returning API client
-  - `ApiResponse<T>` — Typed response envelope (ok, url, headers, status, statusText, data, text)
-  - `UseApiParams` — Config params (serverUrl, csrfCookieName, csrfHeaderKey, credentials, mode)
-  - `OnResponseHook` — Response interception type
-  - `RequestCredentials`, `RequestMode` — Fetch option types
+## 4. Packages / Modules
 
-### `test/server`
-- **Purpose**: Express.js mock server providing REST endpoints for integration tests
-- **Key files**:
-  - `test/server/src/index.ts` — Express app with mock endpoints (/, /204, /401, /403, /post, /put, /patch)
-  - `test/server/package.json` — Express dependencies (body-parser, cors, helmet, morgan, etc.)
-- **Key types/classes**:
-  - Express `App` instance on port 5714
+### `src` — library core
+- **Purpose**: The `restmix` package entry; ships ESM + IIFE bundles to `dist/`.
+- **Key files**: `main.ts`, `api.ts`, `interfaces.ts`.
+- **Key types**: `ApiResponse<T>`, `UseApiParams`, `OnResponseHook`, `RequestCredentials`, `RequestMode`.
+- **Key functions**: `useApi()`; methods `get`, `post`, `put`, `patch`, `del`, `postSse`; helpers `addHeader`, `removeHeader`, `onResponse`, `setCsrfToken`, `setCsrfTokenFromCookie`, `hasCsrfCookie`, `csrfToken`.
 
-### `docsite`
-- **Purpose**: Vite + Vue.js documentation website source
-- **Key files**:
-  - `docsite/src/App.vue` — Root Vue component
-  - `docsite/src/main.ts` — Vue app entry point
-  - `docsite/src/router.ts` — Vue Router config
-  - `docsite/src/conf.ts` — Doc site configuration
-  - `docsite/src/views/` — Documentation views (API keys, CSRF, extra headers, HTTP method examples)
-  - `docsite/src/components/` — Reusable UI components (header, nav, sidebar)
-  - `docsite/src/widgets/` — Content rendering widgets (Markdown, TypeScript code display)
-- **Key types/classes**:
-  - Vue Router-based SPA with dynamic Markdown/TypeScript code rendering
+### `test` — integration suite
+- **Purpose**: Jest tests backed by an express mock server.
+- **Key files**: `test/test.ts` (26 cases), `test/server/src/index.ts` (mock server).
+- **Notes**: Test server listens on port 5714; `npm test` starts it via `start-server-and-test`.
 
-## 5. Server
+### `docsite` — documentation site
+- **Purpose**: Vite/Vue site rendering the public docs; consumes published `restmix`.
+- **Key files**: `docsite/package.json`, `docsite/vite.config.ts`.
+- **Notes**: Separate package with its own deps; not consumed by the library build.
 
-### Test Server (`test/server/`)
-- **Routes**:
-  | Route | Method | Response |
-  |-------|--------|----------|
-  | `/` | GET | `{ "response": "ok" }` |
-  | `/text` | GET | plain text (`Content-Type: text/plain`) |
-  | `/invalid-json` | GET | `{ "invalid json` (200, malformed JSON) |
-  | `/204` | GET | 204 No Content |
-  | `/401` | GET | 401 Unauthorized |
-  | `/403` | GET | `{ "ok": false }` |
-  | `/csrf-set` | GET | sets `csrftoken` cookie, returns `{ "csrf": "test-token" }` |
-  | `/headers` | GET | echoes request headers |
-  | `/post` | POST | `{ "response": "ok" }` |
-  | `/put` | PUT | `{ "response": "ok" }` |
-  | `/patch` | PATCH | `{ "response": "ok" }` |
-  | `/del` | DELETE | `{ "response": "ok" }` |
-  | `/del/404` | DELETE | 404 `{ "error": "not found" }` |
-- **Key files**: `test/server/src/index.ts`, `test/server/package.json`
-- **Patterns**: Express middleware (cors, helmet, morgan, body-parser, dotenv); port configurable via `PORT` env (default 5714)
+### `docs/apidoc` — generated API reference
+- **Purpose**: typedoc-generated API docs (`install.md`, `how.md`, `options.md`, `response.md`).
+- **Notes**: Regenerate with `npm run docs`.
 
-## 6. Plugins
+---
 
-Not applicable — this is a library, not a plugin framework.
+## 5. Test Server Routes (`test/server/src/index.ts`)
 
-## 7. UI
+| Method | Route | Response |
+|--------|-------|----------|
+| GET | `/` | `{ "response": "ok" }` |
+| GET | `/text` | plain text (Content-Type: text/plain) |
+| GET | `/invalid-json` | malformed JSON with 200 status |
+| GET | `/204` | 204 no content |
+| GET | `/401` | 401 |
+| GET | `/403` | `{ "ok": false }` |
+| POST | `/post` | `{ "response": "ok" }` |
+| PUT | `/put` | `{ "response": "ok" }` |
+| PATCH | `/patch` | `{ "response": "ok" }` |
+| DELETE | `/del` | `{ "response": "ok" }` |
+| DELETE | `/del/404` | 404 `{ "error": "not found" }` |
+| GET | `/csrf-set` | sets `csrftoken` cookie, returns `{ "csrf": "test-token" }` |
+| GET | `/headers` | echoes request headers |
 
-### Docsite (`docsite/`)
-- **Components**:
-  - `TheHeader.vue` — Site header
-  - `TheNav.vue` — Main navigation
-  - `TheSidebar.vue` — Sidebar navigation
-  - `LoadingSpinner.vue` — Loading indicator widget
-- **Views** (documentation pages):
-  - `HomeView.vue` — Landing page
-  - `ApiKeyView.vue` — API key authentication docs
-  - `CsrfView.vue` — CSRF token management docs
-  - `ExtraHeadersView.vue` — Custom headers docs
-  - `MdApiFileView.vue` — Markdown API file viewer
-  - `ts/TsGetView.vue`, `ts/TsPostView.vue`, `ts/TsPutView.vue`, `ts/TsPatchView.vue`, `ts/TsPostSseView.vue`, `ts/TsErrorView.vue` — TypeScript usage examples
-- **Services/Widgets**:
-  - `state.ts` — shared app state + API client singletons (`user`, `api`, `apiDemo`) built on `@snowind/state` and `useApi`
-  - `env.d.ts` — Vite module declarations (`*.vue`, `*.svg`)
-  - `RenderMd.vue`, `RenderMdFile.vue` — Markdown rendering
-  - `RenderTs.vue`, `RenderTsFile.vue` — TypeScript code display
-- **Assets**: `assets/index.css` — Tailwind CSS entry
-- **Themes**: Tailwind CSS (`tailwind.config.js`)
-- **Extensions**: TypeDoc plugins (`typedoc-plugin-markdown`, `typedoc-plugin-rename-defaults`)
+---
 
-## 8. Apps
+## 6. Code Snippets
 
-Not applicable — no standalone apps beyond the docsite.
-
-## 9. Code Snippets
-
-### Basic typed GET request
+### Basic typed GET
 ```ts
 import { useApi, ApiResponse } from 'restmix';
 
 const api = useApi();
 
-interface TodoItemContract {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
 const res: ApiResponse<TodoItemContract> = await api.get<TodoItemContract>(
   "https://jsonplaceholder.typicode.com/todos/1",
 );
 if (res.ok) {
-  const data: TodoItemContract = res.data;
+  const data: TodoItemContract = res.data; // parsed + typed
 } else {
+  const status: number = res.status;
   throw new Error(res.statusText);
 }
 ```
 
-### POST with CSRF token
+### Config, custom headers, and onResponse hook
 ```ts
-const api = useApi({ serverUrl: "https://api.example.com" });
-api.setCsrfTokenFromCookie(true); // reads from 'csrftoken' cookie
+const api = useApi({
+  serverUrl: "https://api.example.com",
+  csrfCookieName: "csrftoken",
+  csrfHeaderKey: "X-CSRFToken",
+  credentials: "include",
+  mode: "cors",
+});
 
-const res = await api.post<CreateResult>("/items", { name: "New Item" });
-```
+api.setCsrfTokenFromCookie();          // read CSRF token from cookie
+api.addHeader("X-Custom", "value");    // per-request extra header
 
-### SSE streaming
-```ts
-const controller = new AbortController();
-
-await api.postSse<{ message: string }>(
-  "/stream",
-  { query: "search" },
-  (chunk) => console.log("Got:", chunk),
-  controller,
-);
-
-// Stop streaming
-controller.abort();
-```
-
-### Response hook
-```ts
-const api = useApi();
-
-api.onResponse((res) => {
-  // Transform or log responses
-  if (!res.ok) {
-    console.warn(`Request to ${res.url} failed: ${res.status}`);
-  }
-  return res; // must return modified response
+api.onResponse(async (res) => {        // transform before returning
+  res.data = { ...res.data, modified: true };
+  return res;
 });
 ```
 
-### Custom headers
+### Server-Sent Events streaming
 ```ts
-const api = useApi();
-api.addHeader("Authorization", "Bearer token123");
-api.addHeader("X-Request-ID", "abc-123");
-
-const res = await api.get<User>("/me");
-
-// Remove header later
-api.removeHeader("Authorization");
+const controller = new AbortController();
+await api.postSse<TodoItemContract>(
+  "/stream",
+  { id: 1 },
+  (chunk) => console.log("chunk:", chunk),
+  controller,
+);
 ```
 
-## 10. Navigation Quick Reference
+---
 
-| Task | Path |
-|------|------|
-| Find main library source | `src/api.ts`, `src/interfaces.ts` |
-| Run tests | `npm test` (Jest) |
-| Build library | `npm run build` (Rollup → dist/) |
-| View docs site | Open `docsite/` — `npm run dev` |
-| Run integration test server | `node test/server/dist/index.js` (port 5714) |
-| Modify HTTP methods | `src/api.ts` — get, post, put, patch, del, postSse |
-| Add new types | `src/interfaces.ts` |
-| Change build output | `rollup.config.js` |
-| Update documentation examples | `docsite/src/views/` |
+## 7. Documentation Links
 
-## 11. Documentation Links
-
-| Resource | Path |
-|----------|------|
+| Resource | URL |
+|----------|-----|
 | npm package | https://www.npmjs.com/package/restmix |
-| GitHub repo | https://github.com/synw/restmix |
-| Live doc site | https://synw.github.io/restmix |
-| Doc site source | `docsite/` |
-| TypeDoc config | `tsconfig.json` (typedocOptions) |
-| Project nav | `.agents/documentation/project-nav.md` |
-| Codebase summary | `.agents/documentation/codebase-summary.md` |
+| GitHub repository | https://github.com/synw/restmix |
+| Live documentation site | https://synw.github.io/restmix |
+| Local generated API reference | `docs/apidoc/` (run `npm run docs`) |
 
-## 12. Key Conventions & Patterns
+---
 
-- **Naming**: Composable functions use `use` prefix (`useApi`). Types use PascalCase.
-- **File structure**: Flat `src/` — one module file, no subdirectories.
-- **Build**: Rollup produces two outputs — ESM (`dist/main.js`) and IIFE minified (`dist/main.min.js`, global `$api`).
-- **TypeScript**: Targets ES2015, strict mode enabled, declarations emitted to `dist/`.
-- **Testing**: Jest with ts-jest; integration tests against Express mock server on port 5714.
-- **CSRF default**: Cookie name `csrftoken`, header `X-CSRFToken` — configurable via `UseApiParams`.
-- **Response format**: All methods return `ApiResponse<T>` with `ok` boolean, status code, headers, typed `data`, and raw `text`.
-- **SSE**: `postSse()` requires an `AbortController`; parses SSE `data:` lines as JSON or raw strings.
+## 8. Key Conventions & Patterns
+
+| Convention | Detail |
+|------------|--------|
+| ESM + `.js` import extensions | Source uses TS with ESM; imports reference `.js` extensions even from `.ts` files (e.g. `import { useApi } from "./api.js"`). |
+| Types separated from values | Public types live in `interfaces.ts`; runtime logic in `api.ts`; barrel re-exports both from `main.ts`. |
+| Composable closure config | `useApi(params)` captures config via closure defaults; params override sensible defaults (CSRF cookie `csrftoken`, header `X-CSRFToken`, credentials `include`). |
+| Single response pipeline | Every method calls `_processResponse`, which normalizes headers, parses JSON vs. text, skips body for `204`, and applies the onResponse hook. |
+| Header merging | `_getBaseHeaders` injects the CSRF token (when set) then any extra headers added via `addHeader`. |
+| Verbose logging | HTTP methods accept a `verbose` flag that logs method + URL + options; jest spies on `console` to assert it. |
+| JSON-by-default bodies | POST/PUT/PATCH send `Content-Type: application/json`; pass `multipart=true` to send `FormData`. |
+| Test contract via express | `test/server` exposes one route per documented behavior on port 5714; jest integration suite (`test/test.ts`) drives the real methods against it. |
+| Typedoc for API docs | `tsconfig.json` carries `typedocOptions`; `npm run docs` generates `docs/apidoc/`. |
