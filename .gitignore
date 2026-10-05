@@ -10,4 +10,4 @@ package-lock.json
 .agents/board
 .agents/files
 lat
-lat.md/cache
+lat.md/.cache
