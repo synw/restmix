@@ -90,14 +90,20 @@ Restmix is a lightweight, TypeScript-friendly HTTP client library for REST APIs.
   | Route | Method | Response |
   |-------|--------|----------|
   | `/` | GET | `{ "response": "ok" }` |
+  | `/text` | GET | plain text (`Content-Type: text/plain`) |
+  | `/invalid-json` | GET | `{ "invalid json` (200, malformed JSON) |
   | `/204` | GET | 204 No Content |
   | `/401` | GET | 401 Unauthorized |
   | `/403` | GET | `{ "ok": false }` |
+  | `/csrf-set` | GET | sets `csrftoken` cookie, returns `{ "csrf": "test-token" }` |
+  | `/headers` | GET | echoes request headers |
   | `/post` | POST | `{ "response": "ok" }` |
   | `/put` | PUT | `{ "response": "ok" }` |
   | `/patch` | PATCH | `{ "response": "ok" }` |
+  | `/del` | DELETE | `{ "response": "ok" }` |
+  | `/del/404` | DELETE | 404 `{ "error": "not found" }` |
 - **Key files**: `test/server/src/index.ts`, `test/server/package.json`
-- **Patterns**: Express middleware (cors, helmet, morgan, body-parser)
+- **Patterns**: Express middleware (cors, helmet, morgan, body-parser, dotenv); port configurable via `PORT` env (default 5714)
 
 ## 6. Plugins
 
@@ -119,8 +125,11 @@ Not applicable — this is a library, not a plugin framework.
   - `MdApiFileView.vue` — Markdown API file viewer
   - `ts/TsGetView.vue`, `ts/TsPostView.vue`, `ts/TsPutView.vue`, `ts/TsPatchView.vue`, `ts/TsPostSseView.vue`, `ts/TsErrorView.vue` — TypeScript usage examples
 - **Services/Widgets**:
+  - `state.ts` — shared app state + API client singletons (`user`, `api`, `apiDemo`) built on `@snowind/state` and `useApi`
+  - `env.d.ts` — Vite module declarations (`*.vue`, `*.svg`)
   - `RenderMd.vue`, `RenderMdFile.vue` — Markdown rendering
   - `RenderTs.vue`, `RenderTsFile.vue` — TypeScript code display
+- **Assets**: `assets/index.css` — Tailwind CSS entry
 - **Themes**: Tailwind CSS (`tailwind.config.js`)
 - **Extensions**: TypeDoc plugins (`typedoc-plugin-markdown`, `typedoc-plugin-rename-defaults`)
 

@@ -109,6 +109,7 @@ const useApi = (params: UseApiParams = {
   }
 
   /** Post request with server sent events streaming response support */
+  // @lat: [[test-specs#Gaps & Observations]] — no test exercises this SSE path yet
   const postSse = async<T>(
     uri: string,
     payload: Array<any> | Record<string, any> | FormData,

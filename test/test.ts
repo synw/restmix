@@ -1,6 +1,7 @@
 import { useApi } from '../src/api';
 import { OnResponseHook } from '../src/interfaces';
 
+// @lat: [[test-specs#Coverage Map (Test Cases)]] — the 26 it() cases below, one per documented component
 const api = useApi({
   serverUrl: 'http://localhost:5714',
 });
@@ -17,6 +18,7 @@ describe('tests', () => {
     expect(res.data).toEqual({});
   });
   it('get invalid JSON response', async () => {
+    // @lat: [[test-specs#Notable Testing Techniques]] — console spy pattern; fresh clients below avoid shared state
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const res = await api.get<Record<string, any>>("/invalid-json");
     expect(res.ok).toBe(true);
