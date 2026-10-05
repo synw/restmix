@@ -9,4 +9,5 @@ package-lock.json
 .agents/tasks
 .agents/board
 .agents/files
-.pi
+lat
+lat.md/cache
