@@ -17,12 +17,12 @@ A lightweight Typescript friendly requests manager for rest apis
 ## Documentation
 
 ### For AI Agents
-- [Codebase Summary](.agents/documentation/codebase-summary.md) — Machine-readable technical summary of this module
-- [Decision Tree](.agents/documentation/decision-tree.md) — Router mapping a task to the exact doc/source file you need
-- [Project Overview](.agents/documentation/project-overview.md) — Concise high-level context
-- [Project Navigation](.agents/documentation/project-nav.md) — Canonical deep reference (conventions, snippets, maps)
-- [API Contracts](lat.md/api-contracts.md) — Exact signatures of the public surface
-- [Architecture](lat.md/architecture.md) — Mental model: composable factory, closure state, request pipeline
+- [Codebase Summary](https://github.com/synw/restmix/raw/refs/heads/main/.agents/documentation/codebase-summary.md) — Machine-readable technical summary of this module
+- [Decision Tree](https://github.com/synw/restmix/raw/refs/heads/main/.agents/documentation/decision-tree.md) — Router mapping a task to the exact doc/source file you need
+- [Project Overview](https://github.com/synw/restmix/raw/refs/heads/main/.agents/documentation/project-overview.md) — Concise high-level context
+- [Project Navigation](https://github.com/synw/restmix/raw/refs/heads/main/.agents/documentation/project-nav.md) — Canonical deep reference (conventions, snippets, maps)
+- [API Contracts](https://github.com/synw/restmix/raw/refs/heads/main/lat.md/api-contracts.md) — Exact signatures of the public surface
+- [Architecture](https://github.com/synw/restmix/raw/refs/heads/main/lat.md/architecture.md) — Mental model: composable factory, closure state, request pipeline
 
 ### For Humans
 - [Documentation Site](https://synw.github.io/restmix) — Published Vite/Vue docs
