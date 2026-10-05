@@ -21,6 +21,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^25.9.3",
     "jest": "^30.4.2",
+    "lat.md": "^0.12.2",
     "markdown-it-replace-link": "^1.2.2",
     "rollup": "^4.62.0",
     "start-server-and-test": "^3.0.11",
