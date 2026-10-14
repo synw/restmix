@@ -34,4 +34,3 @@ TypeScript-friendly `fetch` wrapper that parses responses and delivers typed dat
 ## Related
 - See `AGENTS.md` — project router and doc map.
 - See `project-nav.md` — conventions, snippets, dependency graph, module maps.
-- Semantic search over design intent → `lat search` (knowledge graph in `lat.md/`).

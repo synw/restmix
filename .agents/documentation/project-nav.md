@@ -22,11 +22,8 @@ Single-repo TypeScript library (`restmix`) that wraps `fetch` and delivers typed
 
 ## 2. Architecture Principles
 
-The canonical "why" layer lives in the knowledge graph — do not restate it here:
-
-- Mental model (composable factory, closure state, request pipeline) → `lat.md/architecture.md`
-- Rationale & trade-offs (factory vs class, fetch wrapper, CSRF scheme) → `lat.md/design-decisions.md`
-- Find the right section with `lat search "<task>"`.
+- **Composable factory**: the mental model is a closure-based factory with per-client state and a single request pipeline (see § Key Conventions & Patterns).
+- **Rationale** (factory vs class, fetch-wrapper design, CSRF scheme) lives in § Key Conventions & Patterns rather than being restated here.
 
 File-level summary: all runtime logic (`useApi`, HTTP methods, `_processResponse`, `_getBaseHeaders`) lives in `src/api.ts`; public types live in `src/interfaces.ts`; the barrel `src/main.ts` re-exports both.
 
